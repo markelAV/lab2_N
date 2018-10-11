@@ -25,7 +25,6 @@ public class Main {
         home.addFlat(14,flat);
         home.dellFlat(12);
         Flat[] fls =home.getSortFlat();
-
         System.out.println(home.getBestSpace().getArea());
 
     }
