@@ -1,9 +1,9 @@
 package com.company.buildings;
 
 public class Flat {
-    private int rooms;
+    private int rooms; //todo roomsCOunt было бы корректнее
     private double area;
-    private static final int sRooms=2;
+    private static final int sRooms=2; //todo Константы в Java записываются в формате ROOMS_COUNT_DEFAULT
     private static final double sArea=50;
 
     public int getRooms() {

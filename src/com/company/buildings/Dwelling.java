@@ -1,7 +1,8 @@
 package com.company.buildings;
 
+//todo все тудушки из DwellingFloor применимы и к этому классу. ДОполнительные todo cм по тексту
 public class Dwelling {
-    private DwellingFloor[] floors;
+    private DwellingFloor[] floors; //todo тут floors назвал, к кто мешал в DwellingFloor flats назвать? =))))
     public Dwelling(int number,int[] nFlat){
         floors=new DwellingFloor[number];
         for(int i=0;i<number;i++){
@@ -55,6 +56,7 @@ public class Dwelling {
         Flat flat=null;
         int i =number;
         int j=0;
+        //todo убирай дублирование
         while(i>=0){
             if((i-floors[j].getLengthFloor())>=0){
                 i-=floors[j].getLengthFloor();
@@ -69,6 +71,7 @@ public class Dwelling {
 
         return flat;
     }
+    //todo set изменяет ссылку на flat в массиве, а не сам объект
     public void setFlat(int number,Flat flat){
         Flat flat1=getFlat(number);
         if(flat1!=null){
@@ -76,9 +79,11 @@ public class Dwelling {
             flat1.setRooms(flat.getRooms());
         }
     }
+
     public void addFlat(int number,Flat flat) {
         int i = number;
         int j = 0;
+        //todo убирай дублирование
         while (i >= 0) {
             if ((i - floors[j].getLengthFloor()) >= 0) {
                 i -= floors[j].getLengthFloor();
@@ -93,6 +98,7 @@ public class Dwelling {
     public void dellFlat(int number) {
         int i = number;
         int j = 0;
+        //todo убирай дублирование
         while (i >= 0) {
             if ((i - floors[j].getLengthFloor()) >= 0) {
                 i -= floors[j].getLengthFloor();
@@ -108,6 +114,7 @@ public class Dwelling {
         Flat f=null;
         double mArea=0.0;
         for(int i=0;i<floors.length;i++){
+            //todo дважды делаешь поиск - используй переменную, в которую запишешь bestSpace
             if((floors[i].getBestSpace().getArea())> mArea){
                 f=floors[i].getBestSpace();
                 mArea=f.getArea();
@@ -120,6 +127,7 @@ public class Dwelling {
 
     public Flat[] getSortFlat(){
         int n=0;
+
         Flat[] flats = null;
         for(int i=0;i<floors.length;i++){
             n+=floors[i].getLengthFloor();
