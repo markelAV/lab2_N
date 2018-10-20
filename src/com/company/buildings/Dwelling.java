@@ -1,8 +1,7 @@
 package com.company.buildings;
 
-//todo все тудушки из DwellingFloor применимы и к этому классу. ДОполнительные todo cм по тексту
 public class Dwelling {
-    private DwellingFloor[] floors; //todo тут floors назвал, к кто мешал в DwellingFloor flats назвать? =))))
+    private DwellingFloor[] floors;
     private int size;
     public Dwelling(int number,int[] nFlat){
         size=number;

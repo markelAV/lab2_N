@@ -1,15 +1,10 @@
 package com.company.buildings;
 
 
-//todo подсмостри реализацию у java.util.ArrayList
 public class DwellingFloor {
-    private Flat[] flats; //todo переименуй. стандартные правила именования коллекций - тип во множественном числе, т.е. flats+
+    private Flat[] flats;
     private int size;
-        /*todo добавь поле size, хранящее число добавленных квартир. +
-    И ВСЕ циклы внутри методов у тебя будут НЕ от 0 до length (или for-each) с проверкой на !=null,
-    а просто от 0 до size
-     */
-    //todo переименуй и измени реализацию с учетом наличия поля size - возвращаешь копию массива размера size+
+
     public Flat[] getFlats(){
         Flat[] flats=new Flat[size];
         System.arraycopy(this.flats,0,flats,0,size);
@@ -28,16 +23,14 @@ public class DwellingFloor {
 
     public DwellingFloor(Flat[] flats){
         size=flats.length;
-        this.flats =new Flat[size]; //todo нафига создаешь новый массив, а потом ссылку на него все равно переписываешь+
+        this.flats =new Flat[size];
         System.arraycopy(flats,0,this.flats,0,size);
 
     }
-    //todo здесь вернуть size+
     public int getSize(){
         return size;
     }
-    //todo переименуй и измени реализацию с учетом наличия поля size+
-    //todo имя не ахти, areaTotal - было бы вообще супер. get используется в основном для свойств, если работаешь с атрибутом, а не что-то подсчитываешь+
+
     public double areaTotal(){
         double areaF=0.0;
         for(int i = 0; i< size; i++){
@@ -45,7 +38,6 @@ public class DwellingFloor {
         }
         return areaF;
     }
-    //todo переименуй и измени реализацию с учетом наличия поля size (см метод areaTotal)+
     public int roomsTotal(){
         int rooms=0;
         for(int i = 0; i< size; i++){
@@ -57,22 +49,20 @@ public class DwellingFloor {
         return flats[number];
     }
     public void setFlat(int number,Flat flat){
-        //todo нене, тут не изменяешь объект, а сохраняешь в массив ссылку на передвавйемый flat+
         flats[number]=flat;
 
     }
-    /*todo измени реализацию с учетом наличия поля size. +
-   1) Не забывай каждый раз, добавляя Flat, увеличивать size
-   2) Если в массиве уже нет места (length = size), то создавай новый НЕ на 1 элемент больше (операции создания и копирования затратные),
-      обычно массив увеличивается в 1,5 или 2 раза
-   3) Arrays - утилитный класс, незя пользовать
-   4) Копирование элементов из массива в массив - System.arraycopy - он же не утильный =))))
 
- */
+    //todo вот тут ты понаписал говнокода. Весь метод какая-то хрень
+    /*
+    1) 1 проверка если size == length - тогда расширяешь массив - создаешь новый с вдвое большим размером, копируешь туда элементы из исходного, созарняешь во flats ссылку на новый массив
+       2 далее сдвигаешь элементы массива на один вправо, начиная с number
+       3 в элемент массива с номером number записываешь ссылку на переданный flat
+
+     */
     public void addFlat(int number, Flat flat){
         if(size<flats.length) {
             if (number < size) {
-
                 Flat[] flats = new Flat[size+1];
                 int j = 0;
                 for (int i = 0; i < size; i++, j++) {
@@ -83,8 +73,8 @@ public class DwellingFloor {
                         j++;
                     }
                 }
-                size++;
 
+                size++;
                 System.arraycopy(flats, 0, this.flats, 0, size);
             } else {
                 flats[size].setArea(flat.getArea());
@@ -108,23 +98,19 @@ public class DwellingFloor {
         }
     }
 
-    /*todo измени реализацию с учетом наличия поля size.
- 1) Не забывай каждый раз, удаляя Flat, уменьшать size
- 2) Не нужно уменьшать каждый раз размер массива. Уменьшай только size. Операции по созданию новых массивов и копированию элементов стараются выполнять как можно реже
- 3) вынеси код, по копированию элементов массива в отдельный приватный метод (или используй System.arraycopy - он же не утильный =))))
-*/
     public void dellFlat(int number) {
         if(number<size){
             size--;
-            Flat[] flats = new Flat[size];
+            Flat[] flats = new Flat[size]; //todo не нужно нвый массив создавать System.arraycopy может копировать элементы в рамках одного и того же массива
+            //поэтому достаточно будет одного вызова метода arraycopy, чтоб сдвинуть элементы влево, начиная с number+1
             System.arraycopy(this.flats,0,flats,0,number);
             System.arraycopy(this.flats,number+1,flats,number,size-number-1);
         }
     }
     public Flat getBestSpace(){
         Flat flat=flats[0]; //todo не null, а flats[0]+(Почему нельзя null??)
-        double maxSpace=0.0;
-        for(int i = 0; i< size; i++){
+        double maxSpace=0.0; //потому что: 1) здесь нужно double maxSpace = flat.getArea()
+        for(int i = 0; i< size; i++){ //2) и потом цикл стартуешь не с 0, а с 1
             if(flats[i].getArea()>maxSpace){
                 maxSpace= flats[i].getArea();
                 flat= flats[i];
