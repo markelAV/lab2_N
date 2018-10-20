@@ -1,17 +1,17 @@
 package com.company.buildings;
 
 public class Flat {
-    private int rooms; //todo roomsCOunt было бы корректнее
+    private int roomsCount; //todo roomsCOunt было бы корректнее +
     private double area;
-    private static final int sRooms=2; //todo Константы в Java записываются в формате ROOMS_COUNT_DEFAULT
-    private static final double sArea=50;
+    private static final int ROOMS_COUNT_DEFAULT =2; //todo Константы в Java записываются в формате ROOMS_COUNT_DEFAULT +
+    private static final double AREA_DEFAULT =50;
 
-    public int getRooms() {
-        return rooms;
+    public int getRoomsCount() {
+        return roomsCount;
     }
 
-    public void setRooms(int rooms) {
-        this.rooms = rooms;
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
     }
 
     public double getArea() {
@@ -23,13 +23,13 @@ public class Flat {
     }
 
     public Flat(){
-        this(sArea,sRooms);
+        this(AREA_DEFAULT, ROOMS_COUNT_DEFAULT);
     }
     public Flat(double area){
-        this(area,sRooms);
+        this(area, ROOMS_COUNT_DEFAULT);
     }
     public Flat(double area, int rooms){
-        this.rooms=rooms;
+        this.roomsCount =rooms;
         this.area=area;
     }
 

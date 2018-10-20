@@ -3,44 +3,45 @@ package com.company.buildings;
 //todo все тудушки из DwellingFloor применимы и к этому классу. ДОполнительные todo cм по тексту
 public class Dwelling {
     private DwellingFloor[] floors; //todo тут floors назвал, к кто мешал в DwellingFloor flats назвать? =))))
+    private int size;
     public Dwelling(int number,int[] nFlat){
+        size=number;
         floors=new DwellingFloor[number];
-        for(int i=0;i<number;i++){
+        for(int i=0;i<size;i++){
             floors[i]=new DwellingFloor(nFlat[i]);
         }
 
     }
     public Dwelling(DwellingFloor[] floors){
-        this.floors=new DwellingFloor[floors.length];
-        this.floors=floors;
+        size=floors.length;
+        this.floors=new DwellingFloor[size];
+        System.arraycopy(floors,0,this.floors,0,size);
     }
-    public int getSizeFloors(){
-        return floors.length;
+    public int getSize(){
+        return size;
     }
     public DwellingFloor[] getFloors(){
+        DwellingFloor[] floors=new DwellingFloor[size];
+        System.arraycopy(this.floors,0,floors,0,size);
         return floors;
 
     }
-    public int  getFlats(){
-        int nFlats=0;
-        for(int i=0;i<floors.length;i++){
-            nFlats=floors[i].getRoomsFloor();
-        }
-        return nFlats;
+    public int  countFlat(DwellingFloor floor){
+        return floor.getSize();
     }
-    public double getAreaDwelling(){
+    public double areaTotal(){
         double area=0.0;
-        for(int i=0; i<floors.length;i++){
-            area+=floors[i].getAreaFloor();
+        for(int i=0; i<size;i++){
+            area+=floors[i].areaTotal();
         }
         return area;
     }
-    public int getRoomsDwellling(){
+    public int roomsTotal(){
         int rooms=0;
         for(int i=0; i<floors.length;i++){
-            Flat[]flats=floors[i].getFloor();
+            Flat[]flats=floors[i].getFlats();
             for (int j=0;j<flats.length;j++){
-                rooms+=flats[j].getRooms();
+                rooms+=flats[j].getRoomsCount();
             }
         }
         return rooms;
@@ -58,39 +59,38 @@ public class Dwelling {
         int j=0;
         //todo убирай дублирование
         while(i>=0){
-            if((i-floors[j].getLengthFloor())>=0){
-                i-=floors[j].getLengthFloor();
+            i-=floors[j].getSize();
+            if(i>=0){
                 j++;
-
             }
             else{
-                flat=floors[j].getFlat(i);
+                flat=floors[j].getFlat(i+floors[j].getSize());
                 break;
             }
         }
 
         return flat;
+
+
     }
-    //todo set изменяет ссылку на flat в массиве, а не сам объект
+    //todo set изменяет ссылку на flat в массиве, а не сам объект+
     public void setFlat(int number,Flat flat){
         Flat flat1=getFlat(number);
         if(flat1!=null){
-            flat1.setArea(flat.getArea());
-            flat1.setRooms(flat.getRooms());
+            flat1=flat;
         }
     }
 
     public void addFlat(int number,Flat flat) {
         int i = number;
         int j = 0;
-        //todo убирай дублирование
+        //todo убирай дублирование+
         while (i >= 0) {
-            if ((i - floors[j].getLengthFloor()) >= 0) {
-                i -= floors[j].getLengthFloor();
+            i -= floors[j].getSize();
+            if (i >= 0) {
                 j++;
-
             } else {
-                floors[j].addFlat(i,flat);
+                floors[j].addFlat(i+floors[j].getSize(),flat);
                 break;
             }
         }
@@ -98,14 +98,14 @@ public class Dwelling {
     public void dellFlat(int number) {
         int i = number;
         int j = 0;
-        //todo убирай дублирование
+        //todo убирай дублирование+
         while (i >= 0) {
-            if ((i - floors[j].getLengthFloor()) >= 0) {
-                i -= floors[j].getLengthFloor();
+            i -= floors[j].getSize();
+            if (i>= 0) {
                 j++;
 
             } else {
-                floors[j].dellFlat(i);
+                floors[j].dellFlat(i+floors[j].getSize());
                 break;
             }
         }
@@ -113,11 +113,13 @@ public class Dwelling {
     public Flat getBestSpace(){
         Flat f=null;
         double mArea=0.0;
-        for(int i=0;i<floors.length;i++){
-            //todo дважды делаешь поиск - используй переменную, в которую запишешь bestSpace
-            if((floors[i].getBestSpace().getArea())> mArea){
+        double area=0.0;
+        for(int i=0;i<size;i++){
+            //todo дважды делаешь поиск - используй переменную, в которую запишешь bestSpace+
+           area=floors[i].getBestSpace().getArea();
+            if(area> mArea){
                 f=floors[i].getBestSpace();
-                mArea=f.getArea();
+                mArea=area;
 
             }
 
@@ -130,16 +132,16 @@ public class Dwelling {
 
         Flat[] flats = null;
         for(int i=0;i<floors.length;i++){
-            n+=floors[i].getLengthFloor();
+            n+=floors[i].getSize();
         }
         if(n>0){
             flats=new Flat[n];
             int k=0;
             for(int i=0;i<floors.length;i++){
-                for(int j=0;j<floors[i].getLengthFloor();j++){
+                for(int j=0;j<floors[i].getSize();j++){
                     flats[j+k]=floors[i].getFlat(j);
                 }
-                k+=floors[i].getLengthFloor();
+                k+=floors[i].getSize();
             }
 
             for(int i = flats.length-1 ; i > 0 ; i--){
