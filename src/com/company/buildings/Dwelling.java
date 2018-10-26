@@ -52,27 +52,36 @@ public class Dwelling {
         this.floors[number]=floor;
 
     }
-    public Flat getFlat(int number){
-        Flat flat=null;
-        int i =number;
+
+    private DTO findIndexs(int number)
+    {
+        DTO dto=null;
+        int i=number;
         int j=0;
-        //todo убирай дублирование
         while(i>=0){
             i-=floors[j].getSize();
             if(i>=0){
                 j++;
             }
             else{
-                flat=floors[j].getFlat(i+floors[j].getSize());
+                dto=new DTO(j,i+floors[j].getSize());
                 break;
             }
+        }
+        return dto;
+    }
+    public Flat getFlat(int number){
+        Flat flat=null;
+        DTO dto=findIndexs(number);
+        if(dto!=null){
+            flat=floors[dto.getIndexOfFloor()].getFlat(dto.getIndexOfFlat());
         }
 
         return flat;
 
 
     }
-    //todo set изменяет ссылку на flat в массиве, а не сам объект+
+
     public void setFlat(int number,Flat flat){
         Flat flat1=getFlat(number);
         if(flat1!=null){
@@ -81,49 +90,32 @@ public class Dwelling {
     }
 
     public void addFlat(int number,Flat flat) {
-        int i = number;
-        int j = 0;
-        //todo убирай дублирование+
-        while (i >= 0) {
-            i -= floors[j].getSize();
-            if (i >= 0) {
-                j++;
-            } else {
-                floors[j].addFlat(i+floors[j].getSize(),flat);
-                break;
-            }
+        DTO dto=findIndexs(number);
+        if(dto!=null){
+            floors[dto.getIndexOfFloor()].addFlat(dto.getIndexOfFlat(),flat);
         }
+
     }
     public void dellFlat(int number) {
-        int i = number;
-        int j = 0;
-        //todo убирай дублирование+
-        while (i >= 0) {
-            i -= floors[j].getSize();
-            if (i>= 0) {
-                j++;
-
-            } else {
-                floors[j].dellFlat(i+floors[j].getSize());
-                break;
-            }
+        DTO dto=findIndexs(number);
+        if(dto!=null){
+            floors[dto.getIndexOfFloor()].dellFlat(dto.getIndexOfFlat());
         }
+
     }
     public Flat getBestSpace(){
-        Flat f=null;
-        double mArea=0.0;
-        double area=0.0;
-        for(int i=0;i<size;i++){
+        Flat bestSpace=floors[0].getBestSpace();
+        Flat flat;
+        double mArea=bestSpace.getArea();
+        for(int i=1;i<size;i++){
             //todo дважды делаешь поиск - используй переменную, в которую запишешь bestSpace+
-           area=floors[i].getBestSpace().getArea();
-            if(area> mArea){
-                f=floors[i].getBestSpace();
-                mArea=area;
-
+            flat=floors[i].getBestSpace();
+            if(flat.getArea()> mArea){
+                bestSpace=flat;
+                mArea=flat.getArea();
             }
-
         }
-        return f;
+        return bestSpace;
     }
 
     public Flat[] getSortFlat(){
@@ -156,6 +148,34 @@ public class Dwelling {
 
         }
         return flats;
+    }
+
+    private class DTO{
+        private int indexOfFlat;
+        private int indexOfFloor;
+
+        public int getIndexOfFlat() {
+            return indexOfFlat;
+        }
+
+        public int getIndexOfFloor() {
+            return indexOfFloor;
+        }
+
+        public void setIndexOfFlat(int indexOfFlat) {
+            this.indexOfFlat = indexOfFlat;
+        }
+
+        public void setIndexOfFloor(int indexOfFloor) {
+            this.indexOfFloor = indexOfFloor;
+        }
+        public DTO(){
+            this(0,0);
+        }
+        public DTO(int nFloor,int nFlat){
+            indexOfFlat=nFlat;
+            indexOfFloor=nFloor;
+        }
     }
 
 }

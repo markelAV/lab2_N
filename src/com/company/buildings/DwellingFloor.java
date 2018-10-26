@@ -60,57 +60,32 @@ public class DwellingFloor {
        3 в элемент массива с номером number записываешь ссылку на переданный flat
 
      */
-    public void addFlat(int number, Flat flat){
-        if(size<flats.length) {
-            if (number < size) {
-                Flat[] flats = new Flat[size+1];
-                int j = 0;
-                for (int i = 0; i < size; i++, j++) {
-                    if (i != number) {
-                        flats[j] = this.flats[i];
-                    } else {
-                        flats[j] = flat;
-                        j++;
-                    }
-                }
+    public void addFlat(int number, Flat flat) {
 
-                size++;
-                System.arraycopy(flats, 0, this.flats, 0, size);
-            } else {
-                flats[size].setArea(flat.getArea());
-                flats[size].setRoomsCount(flat.getRoomsCount());
-                size++;
-
+        if (number <= size) {
+            if (size == flats.length) {
+                Flat[] flats = new Flat[size * 2];
+                System.arraycopy(this.flats, 0, flats, 0, size);
+                this.flats = flats;
             }
-        }
-        else {
+            System.arraycopy(this.flats, number, this.flats, number + 1, size - number);
+            this.flats[number] = flat;
 
-           Flat[] flats= new Flat[2*size];
-            for (int i = 0; i <2*size ; i++) {
-                flats[i]=new Flat();
-            }
-           System.arraycopy(this.flats,0,flats,0,size);
-            flats[size].setRoomsCount(flat.getRoomsCount());
-            flats[size].setArea(flat.getArea());
-            size*=2;
-            this.flats=new Flat[size];
-            System.arraycopy(flats,0,this.flats,0,size);
         }
     }
 
     public void dellFlat(int number) {
+
         if(number<size){
+
+            System.arraycopy(this.flats,number+1,flats,number,size-number);
             size--;
-            Flat[] flats = new Flat[size]; //todo не нужно нвый массив создавать System.arraycopy может копировать элементы в рамках одного и того же массива
-            //поэтому достаточно будет одного вызова метода arraycopy, чтоб сдвинуть элементы влево, начиная с number+1
-            System.arraycopy(this.flats,0,flats,0,number);
-            System.arraycopy(this.flats,number+1,flats,number,size-number-1);
         }
     }
     public Flat getBestSpace(){
-        Flat flat=flats[0]; //todo не null, а flats[0]+(Почему нельзя null??)
-        double maxSpace=0.0; //потому что: 1) здесь нужно double maxSpace = flat.getArea()
-        for(int i = 0; i< size; i++){ //2) и потом цикл стартуешь не с 0, а с 1
+        Flat flat=flats[0];
+        double maxSpace=flat.getArea();
+        for(int i = 1; i< size; i++){
             if(flats[i].getArea()>maxSpace){
                 maxSpace= flats[i].getArea();
                 flat= flats[i];
