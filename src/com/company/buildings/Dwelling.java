@@ -38,6 +38,7 @@ public class Dwelling {
     public int roomsTotal(){
         int rooms=0;
         for(int i=0; i<floors.length;i++){
+            //todo у тебя же в этаже есть метод, возвращающий ичсло комнат на этаже (аналогично площади)
             Flat[]flats=floors[i].getFlats();
             for (int j=0;j<flats.length;j++){
                 rooms+=flats[j].getRoomsCount();
@@ -85,8 +86,9 @@ public class Dwelling {
     public void setFlat(int number,Flat flat){
         Flat flat1=getFlat(number);
         if(flat1!=null){
-            flat1=flat;
+            flat1=flat; //todo здесь изменил только значение локальной переменной flat1, а не установил ссылку на новую квартиру в массив квартир нужного этажа
         }
+        //todo по аналогии с getFlat() нужно было вызвать метод findIndexs, а потом метод setFlat на этаже.
     }
 
     public void addFlat(int number,Flat flat) {
@@ -108,7 +110,6 @@ public class Dwelling {
         Flat flat;
         double mArea=bestSpace.getArea();
         for(int i=1;i<size;i++){
-            //todo дважды делаешь поиск - используй переменную, в которую запишешь bestSpace+
             flat=floors[i].getBestSpace();
             if(flat.getArea()> mArea){
                 bestSpace=flat;

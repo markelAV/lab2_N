@@ -53,13 +53,6 @@ public class DwellingFloor {
 
     }
 
-    //todo вот тут ты понаписал говнокода. Весь метод какая-то хрень
-    /*
-    1) 1 проверка если size == length - тогда расширяешь массив - создаешь новый с вдвое большим размером, копируешь туда элементы из исходного, созарняешь во flats ссылку на новый массив
-       2 далее сдвигаешь элементы массива на один вправо, начиная с number
-       3 в элемент массива с номером number записываешь ссылку на переданный flat
-
-     */
     public void addFlat(int number, Flat flat) {
 
         if (number <= size) {
@@ -70,7 +63,7 @@ public class DwellingFloor {
             }
             System.arraycopy(this.flats, number, this.flats, number + 1, size - number);
             this.flats[number] = flat;
-
+//todo size забыл увеличить
         }
     }
 
