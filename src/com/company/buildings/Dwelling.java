@@ -1,7 +1,7 @@
 package com.company.buildings;
 
-public class Dwelling {
-    private DwellingFloor[] floors;
+public class Dwelling implements Building {
+    private Floor[] floors;
     private int size;
     public Dwelling(int number,int[] nFlat){
         size=number;
@@ -16,17 +16,22 @@ public class Dwelling {
         this.floors=new DwellingFloor[size];
         System.arraycopy(floors,0,this.floors,0,size);
     }
-    public int getSize(){
+    public int getCount(){
         return size;
     }
-    public DwellingFloor[] getFloors(){
+    public Floor[] getFloors(){
         DwellingFloor[] floors=new DwellingFloor[size];
         System.arraycopy(this.floors,0,floors,0,size);
         return floors;
 
     }
-    public int  countFlat(DwellingFloor floor){
-        return floor.getSize();
+
+    public int countQuarters(){
+        int res=0;
+        for (int i = 0; i <floors.length ; i++) {
+            res+=floors[i].getCount();
+        }
+        return res;
     }
     public double areaTotal(){
         double area=0.0;
@@ -38,76 +43,69 @@ public class Dwelling {
     public int roomsTotal(){
         int rooms=0;
         for(int i=0; i<floors.length;i++){
-            //todo у тебя же в этаже есть метод, возвращающий ичсло комнат на этаже (аналогично площади)
-            Flat[]flats=floors[i].getFlats();
-            for (int j=0;j<flats.length;j++){
-                rooms+=flats[j].getRoomsCount();
-            }
+            //todo у тебя же в этаже есть метод, возвращающий ичсло комнат на этаже (аналогично площади)+
+            rooms+=floors[i].roomsTotal();
         }
         return rooms;
     }
-    public DwellingFloor getFloor(int number){
+    public Floor findFloor(int number){
         return floors[number];
     }
-    public void setFloor(int number,DwellingFloor floor){
+    public void modificationFloor(int number, Floor floor){
         this.floors[number]=floor;
 
     }
 
-    private DTO findIndexs(int number)
-    {
+    private DTO findIndexs(int number) {
         DTO dto=null;
         int i=number;
         int j=0;
         while(i>=0){
-            i-=floors[j].getSize();
+            i-=floors[j].getCount();
             if(i>=0){
                 j++;
             }
             else{
-                dto=new DTO(j,i+floors[j].getSize());
+                dto=new DTO(j,i+floors[j].getCount());
                 break;
             }
         }
         return dto;
     }
-    public Flat getFlat(int number){
-        Flat flat=null;
+    public Space findQuarters(int number){
+        Space flat=null;
         DTO dto=findIndexs(number);
         if(dto!=null){
-            flat=floors[dto.getIndexOfFloor()].getFlat(dto.getIndexOfFlat());
+            flat=floors[dto.getIndexOfFloor()].findQuarters(dto.getIndexOfFlat());
         }
-
         return flat;
-
-
     }
 
-    public void setFlat(int number,Flat flat){
-        Flat flat1=getFlat(number);
-        if(flat1!=null){
-            flat1=flat; //todo здесь изменил только значение локальной переменной flat1, а не установил ссылку на новую квартиру в массив квартир нужного этажа
+    public void modificationQuarters(int number, Space flat){
+        DTO indexs = findIndexs(number);
+        if(indexs!=null) {
+            floors[indexs.getIndexOfFloor()].modificationQuarters(indexs.getIndexOfFlat(), flat);
         }
-        //todo по аналогии с getFlat() нужно было вызвать метод findIndexs, а потом метод setFlat на этаже.
+        //todo по аналогии с findQuarters() нужно было вызвать метод findIndexs, а потом метод modificationQuarters на этаже.+
     }
 
-    public void addFlat(int number,Flat flat) {
+    public void addQuarters(int number, Space flat) {
         DTO dto=findIndexs(number);
         if(dto!=null){
-            floors[dto.getIndexOfFloor()].addFlat(dto.getIndexOfFlat(),flat);
+            floors[dto.getIndexOfFloor()].addQuarters(dto.getIndexOfFlat(),flat);
         }
 
     }
-    public void dellFlat(int number) {
+    public void removeQuarters(int number) {
         DTO dto=findIndexs(number);
         if(dto!=null){
-            floors[dto.getIndexOfFloor()].dellFlat(dto.getIndexOfFlat());
+            floors[dto.getIndexOfFloor()].removeQuarters(dto.getIndexOfFlat());
         }
 
     }
-    public Flat getBestSpace(){
-        Flat bestSpace=floors[0].getBestSpace();
-        Flat flat;
+    public Space getBestSpace(){
+        Space bestSpace=floors[0].getBestSpace();
+        Space flat;
         double mArea=bestSpace.getArea();
         for(int i=1;i<size;i++){
             flat=floors[i].getBestSpace();
@@ -119,28 +117,28 @@ public class Dwelling {
         return bestSpace;
     }
 
-    public Flat[] getSortFlat(){
+    public Space[] SortQuarters(){
         int n=0;
 
-        Flat[] flats = null;
+        Space[] flats = null;
         for(int i=0;i<floors.length;i++){
-            n+=floors[i].getSize();
+            n+=floors[i].getCount();
         }
         if(n>0){
-            flats=new Flat[n];
+            flats=new Space[n];
             int k=0;
             for(int i=0;i<floors.length;i++){
-                for(int j=0;j<floors[i].getSize();j++){
-                    flats[j+k]=floors[i].getFlat(j);
+                for(int j = 0; j<floors[i].getCount(); j++){
+                    flats[j+k]=floors[i].findQuarters(j);
                 }
-                k+=floors[i].getSize();
+                k+=floors[i].getCount();
             }
 
             for(int i = flats.length-1 ; i > 0 ; i--){
                 for(int j = 0 ; j < i ; j++){
 
             if( flats[j].getArea() < flats[j+1].getArea() ){
-                Flat tmp = flats[j];
+                Space tmp = flats[j];
                 flats[j] = flats[j+1];
                 flats[j+1] = tmp;
             }

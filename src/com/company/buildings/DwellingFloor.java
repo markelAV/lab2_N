@@ -1,16 +1,9 @@
 package com.company.buildings;
 
 
-public class DwellingFloor {
-    private Flat[] flats;
+public class DwellingFloor implements Floor {
+    private Space[] flats;
     private int size;
-
-    public Flat[] getFlats(){
-        Flat[] flats=new Flat[size];
-        System.arraycopy(this.flats,0,flats,0,size);
-        return flats;
-
-    }
 
     public DwellingFloor(int number){
         size=number;
@@ -20,17 +13,22 @@ public class DwellingFloor {
 
         }
     }
-
     public DwellingFloor(Flat[] flats){
         size=flats.length;
         this.flats =new Flat[size];
         System.arraycopy(flats,0,this.flats,0,size);
 
     }
-    public int getSize(){
+
+    public Space[] getQuarters(){
+        Space[] flats=new Space[size];
+        System.arraycopy(this.flats,0,flats,0,size);
+        return flats;
+
+    }
+    public int getCount(){
         return size;
     }
-
     public double areaTotal(){
         double areaF=0.0;
         for(int i = 0; i< size; i++){
@@ -45,38 +43,39 @@ public class DwellingFloor {
         }
         return rooms;
     }
-    public Flat getFlat(int number){
+
+    public Space findQuarters(int number){
         return flats[number];
     }
-    public void setFlat(int number,Flat flat){
+    public void modificationQuarters(int number, Space flat){
         flats[number]=flat;
 
     }
 
-    public void addFlat(int number, Flat flat) {
+    public void addQuarters(int number, Space flat) {
 
         if (number <= size) {
             if (size == flats.length) {
-                Flat[] flats = new Flat[size * 2];
+                Space[] flats = new Space[size * 2];
                 System.arraycopy(this.flats, 0, flats, 0, size);
                 this.flats = flats;
             }
             System.arraycopy(this.flats, number, this.flats, number + 1, size - number);
             this.flats[number] = flat;
-//todo size забыл увеличить
+//todo size забыл увеличить+
+            size++;
         }
     }
 
-    public void dellFlat(int number) {
-
+    public void removeQuarters(int number) {
         if(number<size){
 
             System.arraycopy(this.flats,number+1,flats,number,size-number);
             size--;
         }
     }
-    public Flat getBestSpace(){
-        Flat flat=flats[0];
+    public Space getBestSpace(){
+        Space flat=flats[0];
         double maxSpace=flat.getArea();
         for(int i = 1; i< size; i++){
             if(flats[i].getArea()>maxSpace){
