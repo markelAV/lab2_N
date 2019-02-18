@@ -18,7 +18,7 @@ public class OfficeFloor implements Floor{
     public OfficeFloor(int count){
         Office[] offices = new Office[count];
         for(int i =0; i<count;i++){
-            offices[i]=new Office();
+            offices[i]=new Office(); //todo а сразу в цикле вызывать метод add () не засовывая в массив не?
         }
         listInit(offices);
 

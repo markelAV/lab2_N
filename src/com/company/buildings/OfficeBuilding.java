@@ -48,7 +48,7 @@ public class OfficeBuilding implements Building {
         count--;
     }
 
-    public OfficeBuilding(int countFloor,int[] countsOffice){ //todo нужна ли проверка на countsOffice.length >= countFloot ???
+    public OfficeBuilding(int countFloor,int[] countsOffice){ //todo нужна ли проверка на countsOffice.length >= countFloot ??? - можно сделать, чтоб не создавать массив а сразу исключение выбросить
         head = new DoubleNode();
         head.setNext(head);
         head.setPrev(head);
@@ -202,7 +202,7 @@ public class OfficeBuilding implements Building {
         Space[] offices = new Space[n];
         Floor[] officeFloors = getFloors();
         int k=0;
-        for(int i =0;i<officeFloors.length && k<n;i++){
+        for(int i =0;i<officeFloors.length && k<n;i++){ //todo зачем массив этажей? ходи по своему списку этажей в цикле. Потом на итератор заменишь
             Space[] o = officeFloors[i].getQuarters();
             for(int j =0; j<o.length && k<n;j++){
                 offices[k]=o[j];

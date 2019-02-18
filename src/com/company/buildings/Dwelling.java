@@ -43,7 +43,6 @@ public class Dwelling implements Building {
     public int roomsTotal(){
         int rooms=0;
         for(int i=0; i<floors.length;i++){
-            //todo у тебя же в этаже есть метод, возвращающий ичсло комнат на этаже (аналогично площади)+
             rooms+=floors[i].roomsTotal();
         }
         return rooms;
@@ -86,7 +85,6 @@ public class Dwelling implements Building {
         if(indexs!=null) {
             floors[indexs.getIndexOfFloor()].modificationQuarters(indexs.getIndexOfFlat(), flat);
         }
-        //todo по аналогии с findQuarters() нужно было вызвать метод findIndexs, а потом метод modificationQuarters на этаже.+
     }
 
     public void addQuarters(int number, Space flat) {

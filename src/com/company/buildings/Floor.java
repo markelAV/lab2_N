@@ -1,13 +1,13 @@
 package com.company.buildings;
 
 public interface Floor {
-    int getCount();
+    int getCount(); //todo лучше size назвать
     double areaTotal();
     int roomsTotal();
-    Space[] getQuarters();
-    Space findQuarters(int number);
-    void modificationQuarters(int number, Space space);
-    void addQuarters(int number, Space space);
-    void removeQuarters(int number);
+    Space[] getQuarters();//todo лучше getSpaces назвать
+    Space findQuarters(int number); //todo лучше getSpace назвать
+    void modificationQuarters(int number, Space space); //todo лучше setSpace назвать
+    void addQuarters(int number, Space space); //todo лучше просто add оставить
+    void removeQuarters(int number); //todo лучше просто remove оставить
     Space getBestSpace();
 }
